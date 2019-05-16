@@ -14,13 +14,16 @@
           }
         },
         watch: {
-            reset(v) {
+            reset() {
                 this.active = false;
             }
         },
         methods: {
             onClick() {
-                this.active = !this.active;
+                this.setValue(!this.active)
+            },
+            setValue(state) {
+                this.active = state;
                 this.$emit('change', this.active);
             }
         }

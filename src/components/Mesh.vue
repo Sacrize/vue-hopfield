@@ -2,7 +2,7 @@
     <div class="mesh">
         <div :key="row" class="row" v-for="row in inRow">
             <div :key="col" class="col" v-for="col in inRow">
-                <Node @change="v => onChange(row, col, v)" :reset="flush"></Node>
+                <Node @change="v => onChange(row, col, v)" :reset="flush" :ref="'node_' + calcIndex(row, col)"></Node>
             </div>
         </div>
     </div>
@@ -26,8 +26,15 @@ export default {
         }
     },
     watch: {
-      value() {
-          this.reset();
+      value(v) {
+          if (!v.length) {
+              this.reset();
+          } else {
+              for (let i = 0; i < v.length; i++) {
+                  let comp = this.$refs['node_' + i];
+                  comp[0].setValue(v[i] === 1);
+              }
+          }
       }
     },
     components: {
@@ -47,10 +54,23 @@ export default {
             this.value.length = this.nodes;
             this.value.fill(-1);
             this.flush = !this.flush;
+        },
+        calcIndex(row, col) {
+            return ((row - 1) * this.inRow) + (col - 1);
         }
     },
     beforeMount() {
-        this.reset();
+        if (!this.value.length) {
+            this.reset();
+        }
+    },
+    mounted() {
+        if (this.value.length) {
+            for (let i = 0; i < this.value.length; i++) {
+                let comp = this.$refs['node_' + i];
+                comp[0].setValue(this.value[i] === 1);
+            }
+        }
     }
 }
 </script>

@@ -57,13 +57,15 @@
               <div class="mb-4">
                 <v-btn @click="learn">Naucz się</v-btn>
                 <v-btn @click="remind">Sprawdź</v-btn>
-                <v-btn>Reset</v-btn>
+                <v-btn @click="reset">Reset</v-btn>
               </div>
               <h4 class="mb-3">Wykorzystanie pamięci: {{ memory }}%
               </h4>
               <p v-if="train.length">Umiem już {{ train.length }} wzory!</p>
               <p v-else>Niczego jeszcze nie umiem :(</p>
               <Mesh :nodes="nodes" v-model="state"></Mesh>
+              <hr />
+              <Mesh v-for="s in history" :nodes="nodes" :value="s"></Mesh>
             </v-flex>
           </v-layout>
         </v-container>
@@ -87,6 +89,7 @@ export default {
       neurons: 0,
       state: [],
       train: [],
+      history: [],
       W: [],
       memoryLimit: 0.05,
       tolerance: 100,
@@ -115,6 +118,7 @@ export default {
       this.neurons = Math.pow(Math.round(Math.sqrt(this.neurons)), 2);
     },
     learn() {
+      this.history.push(this.state);
       this.train.push([...this.state]);
       this.state = [];
 
@@ -133,7 +137,6 @@ export default {
     },
     remind() {
       let vector = [...this.state];
-      this.state = [];
 
       let wasFound = null;
 
@@ -152,6 +155,7 @@ export default {
       }
 
       if (wasFound) {
+        this.state = [];
         this.rebuild(wasFound);
       }
     },
@@ -165,7 +169,8 @@ export default {
       this.train = [];
     },
     rebuild(vector) {
-
+      alert('Pamiętam!');
+      this.state = [...vector];
     }
   },
 
