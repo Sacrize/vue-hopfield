@@ -11,6 +11,7 @@
     "core-js": "^2.6.5",
     "mathjs": "^5.9.0",
     "vue": "^2.6.10",
+    "vue-image-upload-resize": "^2.0.4",
     "vuetify": "^1.5.14"
   },
   "devDependencies": {
