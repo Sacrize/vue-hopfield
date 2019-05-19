@@ -2,7 +2,7 @@
     <div class="mesh">
         <div :key="row" class="row" v-for="row in inRow">
             <div :key="col" class="col" v-for="col in inRow">
-                <Node @change="v => onChange(row, col, v)" :reset="flush" :ref="'node_' + calcIndex(row, col)"></Node>
+                <Node @change="v => onChange(row, col, v)" :reset="flush" :ref="'node_' + calcIndex(row, col)" :readonly="readonly"></Node>
             </div>
         </div>
     </div>
@@ -18,6 +18,9 @@ export default {
         },
         value: {
             type: Array,
+        },
+        readonly: {
+            type: Boolean,
         }
     },
     data() {

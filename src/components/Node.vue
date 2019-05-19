@@ -7,6 +7,7 @@
         name: "Node",
         props: {
           reset: Boolean,
+          readonly: Boolean,
         },
         data() {
           return {
@@ -20,7 +21,9 @@
         },
         methods: {
             onClick() {
-                this.setValue(!this.active)
+                if (!this.readonly) {
+                    this.setValue(!this.active)
+                }
             },
             setValue(state) {
                 this.active = state;
