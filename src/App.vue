@@ -41,15 +41,14 @@
             type="number"
             v-model="tolerance"
             min="0"
-            max="100"
-            label="Tolerancja"
+            label="Próby skojarzenia"
           ></v-text-field>
 
           <v-text-field
             type="number"
             v-model="noicePercent"
             max="100"
-            label="Maks. szumu [%]"
+            label="Szum [%]"
             @change="onChangeNoicePercent"
           ></v-text-field>
 
@@ -90,7 +89,7 @@
                 <v-btn @click="reset">Reset</v-btn>
               </div>
               <Mesh :nodes="nodes" v-model="state"></Mesh>
-              <div v-if="history.length" class="mt-2">
+              <div v-if="shouldShowNoiceButton" class="mt-2">
                 <v-btn small @click="noice">Szum</v-btn>
               </div>
               <hr class="my-4" />
@@ -132,13 +131,13 @@ export default {
       learning: 'Hebbian',
       energy: 0.0,
       noiceOf: [],
-      noicePerc: 10.00,
+      noicePerc: 10,
     }
   },
   computed: {
     noicePercent: {
       get() {
-        return this.noicePerc.toFixed(2);
+        return this.noicePerc;
       },
       set() { }
     },
@@ -159,6 +158,10 @@ export default {
       } else {
         return this.storkeyCapacity();
       }
+    },
+    shouldShowNoiceButton() {
+      let active = this.state.reduce((p, c) => p + Number(c === 1), 0);
+      return active > 2;
     }
   },
   watch: {
@@ -190,7 +193,7 @@ export default {
             chenged++;
           }
         }
-        console.log((chenged / active * 100).toFixed(2), this.noicePercent)
+
         if ((chenged / active * 100).toFixed(2) >= this.noicePercent) {
           del--;
           break;
@@ -236,6 +239,10 @@ export default {
       return energy;
     },
     learn() {
+
+      let active = this.state.reduce((p, c) => p + Number(c === 1), 0);
+      if (active === 0) return;
+
       this.history.push(this.state);
       this.train.push([...this.state]);
       let tmp = [...this.state];
