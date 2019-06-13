@@ -10,7 +10,7 @@
                     clipped-right
             >
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                <v-toolbar-title>Toolbar</v-toolbar-title>
+                <v-toolbar-title>Uniwersytet Technologiczno-Przyrodniczy w Bydgoszczy</v-toolbar-title>
                 <v-spacer></v-spacer>
             </v-toolbar>
             <v-navigation-drawer
